@@ -1,0 +1,1 @@
+This folder will hold all new data acquired, IE: any images taken
