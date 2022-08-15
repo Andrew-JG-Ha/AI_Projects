@@ -5,7 +5,6 @@ import face_recognition as FR
 import pickle
 import os
 import time
-import threading
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -17,7 +16,7 @@ tolerance = .6
 
 myCam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 myCam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-myCam.set(cv2.CAP_PROP_FPS, 30)
+myCam.set(cv2.CAP_PROP_FPS, 50)
 myCam.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
 
 faceBoxes = FORM_FACE_BOX.FORM_FACE_BOX(minimum_threshold=0.25)
@@ -86,10 +85,8 @@ if trainResult != '':
 with open("faceRecognitionData\encodings_File.pkl", 'rb') as file2:
     knownFaces = pickle.load(file2)
 
-
-
-
 while True:
+    startTime = time.time()
     ignore, frame = myCam.read()
     frameRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     unknownFaces = faceBoxes.FORM_ARRAY(frameRGB)
@@ -109,7 +106,10 @@ while True:
                 matchIndex = matches.index(True)
                 name = knownFaces[0][matchIndex]
             cv2.putText(frame, name, unknownFace[0], font, 2, (255, 0, 0), 2)
-
+    endTime = time.time()
+    deltaTime = endTime - startTime
+    framesPerSecond = int(1/deltaTime)
+    cv2.putText(frame, "FPS: "+str(framesPerSecond), (100,100), font, 1, (0,0,0), 2)
     cv2.imshow("myFrame", frame)
     if cv2.waitKey(1) & 0xff == ord('q'):
         break
