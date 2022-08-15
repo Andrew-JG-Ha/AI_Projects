@@ -1,3 +1,11 @@
+"""
+This program uses OpenCV, Mediapipe, Face_Recognition and supplementary libraries
+to improve the Frames Per Second (FPS) of the output video. The increase in FPS
+attained on average 0.7 FPS greater than just running the facial recognition
+features in the Face_Recognition library.
+"""
+
+
 from asyncio.windows_events import NULL
 from Data_Parsing import FORM_FACE_BOX
 import cv2
@@ -91,11 +99,7 @@ while True:
     frameRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     unknownFaces = faceBoxes.FORM_ARRAY(frameRGB)
     for unknownFace in unknownFaces:
-        top = unknownFace[0][1]
-        right = unknownFace[1][0]
-        bottom = unknownFace[1][1]
-        left = unknownFace[0][0]
-        testArray = [(top, right, bottom, left)]
+        testArray = [(unknownFace[0][1], unknownFace[1][0], unknownFace[1][1], unknownFace[0][0])]
         unknownEncoding = FR.face_encodings(frameRGB, testArray)
 
         cv2.rectangle(frame, unknownFace[0], unknownFace[1], (255,0,0), 3)
@@ -108,7 +112,7 @@ while True:
             cv2.putText(frame, name, unknownFace[0], font, 2, (255, 0, 0), 2)
     endTime = time.time()
     deltaTime = endTime - startTime
-    framesPerSecond = int(1/deltaTime)
+    framesPerSecond = round(1/deltaTime,3)
     cv2.putText(frame, "FPS: "+str(framesPerSecond), (100,100), font, 1, (0,0,0), 2)
     cv2.imshow("myFrame", frame)
     if cv2.waitKey(1) & 0xff == ord('q'):
