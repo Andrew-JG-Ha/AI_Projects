@@ -1,10 +1,16 @@
 """
 This program uses OpenCV, Mediapipe, Face_Recognition and supplementary libraries
-to improve the Frames Per Second (FPS) of the output video. The increase in FPS
-attained on average 0.7 FPS greater than just running the facial recognition
-features in the Face_Recognition library.
-"""
+to attempt and improve the Frames Per Second (FPS) of the output video. The
+program was able to average 2.42 FPS with 1 person in the frame and average 1.21 FPS
+with 2 people in the frame
 
+Differences from baseline (only using Face_Recognition methods):
+                    Baseline  | This Program | Difference
+1 Person in Frame:  1.70 FPS  | 2.42 FPS     | +0.72 FPS
+2 People in Frame:  1.02 FPS  | 1.21 FPS     | +0.19 FPS
+
+The method employed in this program was only slightly better than the baseline methods
+"""
 
 from asyncio.windows_events import NULL
 from Data_Parsing import FORM_FACE_BOX
@@ -93,6 +99,7 @@ if trainResult != '':
 with open("faceRecognitionData\encodings_File.pkl", 'rb') as file2:
     knownFaces = pickle.load(file2)
 
+# Method containing Mediapipe
 while True:
     startTime = time.time()
     ignore, frame = myCam.read()
@@ -117,4 +124,37 @@ while True:
     cv2.imshow("myFrame", frame)
     if cv2.waitKey(1) & 0xff == ord('q'):
         break
+
+
+# """
+# The below code is running facial recognition using just the Face_Recognition library methods, 
+# the program averaged 1.7 FPS when having 1 person in the frame and 1.02 FPS when there were 2 people in
+# the frame
+# """
+
+    # Method solely based off Face_Recognition Library
+    # startTime = time.time()
+    # ignore, frame = myCam.read()
+    # unknownFace = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    # faceLocations = FR.face_locations(unknownFace)
+    # unknownEncodings = FR.face_encodings(unknownFace, faceLocations)
+
+    # for faceLocation, unknownEncoding in zip(faceLocations, unknownEncodings):
+    #     top, right, bottom, left = faceLocation
+    #     cv2.rectangle(frame, (left, top), (right, bottom), (0,0,255), 3) 
+    #     name = 'Unknown Person'
+    #     matches = FR.api.compare_faces(knownFaces[1], unknownEncoding)
+    #     if (True in matches):
+    #         matchIndex = matches.index(True)
+    #         name = knownFaces[0][matchIndex]
+    #     cv2.putText(frame, name, (left, top), font, 2, (255, 0, 0), 2)
+
+    # endTime = time.time()
+    # deltaTime = endTime-startTime
+    # framesPerSecond = round(1/deltaTime, 3)
+    # cv2.putText(frame, "FPS: "+str(framesPerSecond), (100,100), font, 1, (0,0,0), 2)
+    # cv2.imshow('My Faces', frame)
+    # if (cv2.waitKey(1) & 0xff == ord('q')):
+    #     break
+
 myCam.release()
