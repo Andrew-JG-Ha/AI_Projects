@@ -102,13 +102,13 @@ if train == 1:
         gestureNames.append(name)
     trainName = input("Filename for training data? (Press Enter for Default) ")
     if trainName == '':
-        trainName='default'
+        trainName='handGestureData/default'
     trainName=trainName+'.pkl'
 
 if train == 0:
     trainName = input("What Training Data Do You Want to Use? (Press Enter for Default) ")
     if trainName == '':
-        trainName = 'default'
+        trainName = 'handGestureData/default'
     trainName = trainName + '.pkl'
     with open(trainName, 'rb') as f:
         gestureNames = pickle.load(f)
