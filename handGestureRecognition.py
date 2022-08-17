@@ -1,3 +1,7 @@
+"""
+Allows the user to train the program on hand gestures, user can take pre-trained data or train new gestures
+"""
+
 from asyncio.windows_events import NULL
 import cv2
 from numpy import inner, true_divide
