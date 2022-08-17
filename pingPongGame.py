@@ -1,3 +1,10 @@
+"""
+Allows the user to play a ping pong game using their fingers. This program tracks the user(s) index fingers
+and relates the position to the program where the user can control the paddles in the video stream.
+
+"""
+
+
 from operator import index
 import random
 from cv2 import cvtColor
