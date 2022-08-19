@@ -1,3 +1,7 @@
+"""
+This class helps with parsing any face-boxing related tasks, returns an array of tuples outlining a box per person in frame
+"""
+
 import mediapipe as mp
 
 class FORM_FACE_BOX:
